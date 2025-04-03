@@ -9,6 +9,7 @@ WEBCFLAGS=-Isrc -Ilib/include
 default: run
 
 out: out/main
+	cp dat out -r
 
 run: out
 	cd out; ./main
