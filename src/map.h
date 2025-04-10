@@ -3,9 +3,14 @@
 
 #include <stdio.h>
 
-typedef struct {
+#define MAP_SIZE 2048
 
-} Map;
+typedef struct MapNode MapNode;
+typedef struct Map Map;
+
+struct Map {
+  MapNode *nodes[MAP_SIZE]; 
+};
 
 typedef enum {
   MAP_OK = 0,
