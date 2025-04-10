@@ -22,6 +22,7 @@ void shuffle(int *array, int size) {
 }
 
 const char *const INPUT_PATH = "dat/google-10000-english-usa.txt";
+const char *const OUTPUT_PATH = "out/file.map";
 
 int main(void) {
     //read input data
