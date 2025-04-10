@@ -16,12 +16,23 @@ int main(void) {
     if (!input_file)
         return 1;
 
-    char *read;
-    while ((read = getline(words[word_en ++], )))
-
     fclose(input_file);
+
+    // generate the shuffle
+    // 1. range 
+    // 2. shuffle
 
     // create a map
     Map map = map_init(words, shuffle);
+
+    map_opt(map);
+    
+    FILE *output_file = fopen(OUTPUT_PATH, "w");
+    if (!output_file)
+        return 1;
+
+    // stores the map
+    map_store(map, output_file);
+
     return 0;
 }

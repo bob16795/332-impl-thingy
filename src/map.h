@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 typedef struct {
+
 } Map;
 
 typedef enum {
@@ -17,7 +18,7 @@ MapError map_store(Map *const map, FILE *stream);
 
 // runtime fns
 Map map_load(FILE *stream);
-char *map_access(Map *const map, char *const input);
+char const *map_access(Map *const map, char *const input);
 
 // shared
 void map_deinit(Map *const map);
