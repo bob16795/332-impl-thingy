@@ -1,4 +1,6 @@
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "map.h"
 #include "structure.h"
 #include "statemachine.h"
@@ -27,14 +29,17 @@ int main(void) {
     
     //Reading file character by character
     char ch;
-    while ((ch = fgetc(input_file)) != EOF) {
-        if (ch != '\n') {
+    while (ch != EOF) {
+        ch = fgetc(input_file);
+
+        if (ch != '\n' && ch != EOF) {
             word[letterCounter] = ch;
             letterCounter++;
             continue;
         }
+
         // Clean up, add terminating char
-        word[letterCounter] = '0';
+        word[letterCounter] = '\0';
         letterCounter++;
 
         // Store the word in the heap, get a pointer to that word
@@ -43,19 +48,19 @@ int main(void) {
 
         // Allocate
         wordCounter++;
-        language = relloc(language, sizeof(char *) * (wordCounter));
-        range = relloc(range, (wordCounter) * sizeof(int));
+        language = realloc(language, sizeof(char *) * (wordCounter));
+        range = realloc(range, (wordCounter) * sizeof(int));
 
         // Assign the word to the language
-        language[wordCounter - 1] = word;
+        language[wordCounter - 1] = heap_word;
         range[wordCounter - 1] = wordCounter - 1;
 
         letterCounter = 0;
     }
 
     //Allocate a null to the the language so that we don't have to store wordCounter
-    language = relloc(language, sizeof(char *) * (wordCounter + 1));
-    language[wordCounter - 1] = NULL;
+    language = realloc(language, sizeof(char *) * (wordCounter + 1));
+    language[wordCounter] = NULL;
 
     //Close
     fclose(input_file);
@@ -66,6 +71,7 @@ int main(void) {
     //Dealloc
     free(range);
     for (int i = 0; i < wordCounter; i++) {
+        printf("%s\n", language[i]);
         free(language[i]);
     }
     free(language);
