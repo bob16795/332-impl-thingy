@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "map.h"
 #include "structure.h"
 #include "statemachine.h"
