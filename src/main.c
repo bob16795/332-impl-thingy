@@ -46,7 +46,7 @@ int main(void) {
         }
         
         //Clean up, add terminating char
-        word[letterCounter] = '\0';  //Fixed: should be null terminator, not '0'
+        word[letterCounter] = '\0'; 
         
         // Store the word in the heap, get a pointer to that word
         char *heap_word = malloc(letterCounter + 1); 
@@ -58,7 +58,7 @@ int main(void) {
         range = realloc(range, wordCounter * sizeof(int));  
         
         // Assign the word to the language
-        language[wordCounter - 1] = heap_word;  // Fixed: store heap_word, not word
+        language[wordCounter - 1] = heap_word; 
         range[wordCounter - 1] = wordCounter - 1;
         letterCounter = 0;
     }
