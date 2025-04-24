@@ -7,7 +7,7 @@ DataMap data_init(char **words, int *shuffle) {
     Word* head = NULL;
 
     //Construct linked list
-    for (char** word = words; word; word = word + 1, value = value + 1) {
+    for (char** word = words; *word; word = word + 1, value = value + 1) {
         Word* current = malloc(sizeof(Word));
         current->word = word; 
         current->value = *value;
@@ -17,18 +17,15 @@ DataMap data_init(char **words, int *shuffle) {
 
         map.wordCount++;
     }
-    
+        
     map.words = head;
 
     return map;
 }
 
 DataError data_opt(DataMap *map) {
-    
-
-
     for (Word* word = map->words; word; word = word->nextWord) {
-        for (char* ch = word->word; *ch; ch = ch + 1) {
+        for (char* ch = *word->word; *ch; ++ch) {
             map->ranges[(int) (*ch)].prob++;
             map->charCount++;
         }
@@ -44,10 +41,11 @@ DataError data_opt(DataMap *map) {
 
     for (int i = 0; i < 256; i++) {
         map->ranges[i].prob /= map->charCount;
+        printf("%c %f\n", i, map->ranges[i].prob);
     } 
 
     //Begin character assignment to interval of [0, wordCount)
-    int lowInterval = 0;
+    float lowInterval = 0;
 
     //Many will be 0
     for (int i = 0; i < 256; i++) {
@@ -62,7 +60,6 @@ DataError data_opt(DataMap *map) {
         lowInterval = lowInterval + map->ranges[i].prob;
     }
 
-
     //Encode each word to a unique value for sub cipher
     for (Word* word = map->words; word; word = word->nextWord) {
         //Set the max range of the word
@@ -71,7 +68,7 @@ DataError data_opt(DataMap *map) {
             .high = 1
         }; 
     
-        for (char* ch = *word->word; *ch; ch = ch + 1) {
+        for (char* ch = *word->word; *ch; ++ch) {
             int currentRange = wordRange.high - wordRange.low;
             Range chRange = map->ranges[(int) (*ch)];
     
@@ -84,9 +81,10 @@ DataError data_opt(DataMap *map) {
         word->high = wordRange.high;
 
         //Dummy printout for testing
-        printf("%s || [%.5f, %.5f)\n", *word->word, word->low, word->high);
+        printf("%s || [%f, %f)\n", *word->word, word->low, word->high);
         
     }
+
     return DATA_OK;
 }
 
@@ -100,7 +98,6 @@ DataMap data_load(FILE *stream) {
 }
 
 char const *data_access(DataMap *const map, char *const input) {
-
 
 }
 

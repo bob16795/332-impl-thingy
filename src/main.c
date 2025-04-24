@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "map.h"
+#include "hash.h"
 #include "structure.h"
 #include "statemachine.h"
 
@@ -84,10 +84,16 @@ int main(void) {
     //create a map with the original language array and shuffled range
     Map map = map_init(language, range);
     
+    // optimize map
+    MapError err = map_opt(&map);
+
+    // test the map
+    
     //Dealloc
+    map_deinit(&map);
+
     free(range);
     for (int i = 0; i < wordCounter; i++) {
-        printf("%s\n", language[i]);
         free(language[i]);
     }
     free(language);

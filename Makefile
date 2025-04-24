@@ -1,7 +1,7 @@
 CC=gcc
-CFLAGS=-Isrc -Ilib/include -g
+CFLAGS=-Isrc -Ilib/include -g -DCode
 LFLAGS=-Llib -lm -g
-DEPS=src/map.h src/structure.h src/statemachine.h
+DEPS=src/hash.h src/structure.h src/statemachine.h
 
 WEBCC=emcc
 WEBCFLAGS=-Isrc -Ilib/include
@@ -20,7 +20,7 @@ debug: out
 bld/%.o: src/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-out/main: setup bld/main.o bld/map.o bld/structure.o bld/statemachine.o
+out/main: setup bld/main.o bld/hash.o bld/structure.o bld/statemachine.o
 	$(CC) -o out/main bld/*.o $(LFLAGS)
 
 setup:
