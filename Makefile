@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Isrc -Ilib/include -g -DCode
+CFLAGS=-Isrc -Ilib/include -g -DData
 LFLAGS=-Llib -lm -g
 DEPS=src/hash.h src/structure.h src/statemachine.h
 

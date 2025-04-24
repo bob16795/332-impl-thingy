@@ -1,6 +1,5 @@
 #include "structure.h"
 
-
 DataMap data_init(char **words, int *shuffle) {
     DataMap map = {0};
     int* value = shuffle;
@@ -103,7 +102,14 @@ char const *data_access(DataMap *const map, char *const input) {
 
 // shared
 void data_deinit(DataMap *const map) {
-    
+    Word *next = map->words;
+    Word *word = NULL;
+
+    while (word = next) {
+        next = word->nextWord;
+
+        free(word);
+    }     
 }
 
 
