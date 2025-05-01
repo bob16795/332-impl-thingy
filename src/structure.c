@@ -2,15 +2,17 @@
 
 DataMap data_init(char **words, int *shuffle) {
     DataMap map = {0};
-    int* value = shuffle;
+
     Word* head = NULL;
 
-    //Construct linked list
+    //Construct linked list    
+    int* value = shuffle;
     for (char** word = words; *word; word = word + 1, value = value + 1) {
         Word* current = malloc(sizeof(Word));
-        current->word = word;
-        current->value = *value;
+        current->word = word; 
+        current->outputWord = words[*value];
         current->nextWord = head; 
+
 
         head = current;
 
@@ -83,6 +85,31 @@ DataError data_opt(DataMap *map) {
         printf("%s || [%f, %f)\n", *word->word, word->low, word->high);
     }
 
+
+    //Sort the map using insertion sort
+    Word* sorted = NULL;
+    Word* current = map->words;
+
+    while (current) {
+        Word* next = current->nextWord;
+
+        if (!sorted || current->value < sorted->value) {
+            current->nextWord = sorted;
+            sorted = current;
+        } else {
+            Word* temp = sorted;
+            while (temp->nextWord && temp->nextWord->value < current->value) {
+                temp = temp->nextWord;
+            }
+            current->nextWord = temp->nextWord;
+            temp->nextWord = current;
+        }
+
+        current = next;
+    }
+
+    map->words = sorted;
+
     return DATA_OK;
 }
 
@@ -95,8 +122,44 @@ DataMap data_load(FILE *stream) {
 
 }
 
-char const *data_access(DataMap *const map, char *const input) {
+Word* word_access(Word* head, int index) {
+    Word* result = head; 
+    for (int i = 0; i < index - 1; i++) result = result->nextWord;
+    return head;
+}
 
+char const *data_access(DataMap *const map, char *const input) {
+    Range wordRange = {
+        .low = 0, 
+        .high = 1
+    }; 
+
+    for (char* ch = input; *ch; ++ch) {
+        int currentRange = wordRange.high - wordRange.low;
+        Range chRange = map->ranges[(int) (*ch)];
+
+        //Shrink the range
+        wordRange.high = wordRange.low + (currentRange * chRange.high);
+        wordRange.low = wordRange.low + (currentRange * chRange.low); 
+    }
+
+    float mid = (wordRange.high + wordRange.low) / 2;
+
+    int minIndex = 0;
+    int maxIndex = map->wordCount - 1; 
+
+    while(minIndex != maxIndex) {
+        int center = (minIndex + maxIndex) / 2;
+        Word* current = word_access(map->words, center);
+        if (current->low > mid) {
+            minIndex = center + 1; 
+        }
+        if (current->high > mid) {
+            maxIndex = center - 1; 
+        }
+    }
+
+    return *word_access(map->words, minIndex)->outputWord; 
 }
 
 // shared
@@ -110,5 +173,4 @@ void data_deinit(DataMap *const map) {
         free(word);
     }     
 }
-
 

@@ -32,6 +32,7 @@ struct Range {
 struct Word {
     char** word;
     int value;
+    char** outputWord; 
     Word* nextWord;
     //Store the range that can encode the word
     float low;
