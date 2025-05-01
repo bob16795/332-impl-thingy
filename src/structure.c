@@ -8,7 +8,7 @@ DataMap data_init(char **words, int *shuffle) {
     //Construct linked list
     for (char** word = words; *word; word = word + 1, value = value + 1) {
         Word* current = malloc(sizeof(Word));
-        current->word = word; 
+        current->word = word;
         current->value = *value;
         current->nextWord = head; 
 
@@ -81,7 +81,6 @@ DataError data_opt(DataMap *map) {
 
         //Dummy printout for testing
         printf("%s || [%f, %f)\n", *word->word, word->low, word->high);
-        
     }
 
     return DATA_OK;

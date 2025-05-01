@@ -75,12 +75,6 @@ int main(void) {
     //Just shuffle the range array, keeping the language array in original order
     shuffle(range, wordCounter);
     
-    //For demonstration, let's print a few words and their shuffled indices
-    printf("First 5 words with their shuffled indices:\n");
-    for (int i = 0; i < 5 && i < wordCounter; i++) {
-        printf("Word: %s, Shuffled Index: %d\n", language[i], range[i]);
-    }
-    
     //create a map with the original language array and shuffled range
     Map map = map_init(language, range);
     
@@ -88,6 +82,18 @@ int main(void) {
     MapError err = map_opt(&map);
 
     // test the map
+    for (int i = 0; i < wordCounter; i++) {
+        char const *fetched = map_access(&map, language[i]);
+        if (!fetched) {
+            printf("Error: word '%s' resolved to NULL!!!!!!!!", language[i], fetched, language[range[i]]);
+            return 1;
+        }
+
+        if (fetched != language[range[i]]) {
+            printf("Error: word '%s' resolved to '%s', expected '%s'", language[i], fetched, language[range[i]]);
+            return 1;
+        }
+    }
     
     //Dealloc
     map_deinit(&map);

@@ -60,7 +60,9 @@ CodeError code_store(CodeMap *const map, FILE *stream) {}
 
 // runtime fns
 CodeMap code_load(FILE *stream) {}
-char const *code_access(CodeMap *const map, char *const input) {}
+char const *code_access(CodeMap *const map, char *const input) {
+    return NULL;
+}
 
 // shared
 void code_deinit(CodeMap *const map) {}

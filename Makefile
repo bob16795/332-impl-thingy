@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Isrc -Ilib/include -g -DData
+CFLAGS=-Isrc -Ilib/include -g -DCode
 LFLAGS=-Llib -lm -g
 DEPS=src/hash.h src/structure.h src/statemachine.h
 
@@ -25,3 +25,6 @@ out/main: setup bld/main.o bld/hash.o bld/structure.o bld/statemachine.o
 
 setup:
 	mkdir -p out bld
+
+clean:
+	rm -rf out bld
